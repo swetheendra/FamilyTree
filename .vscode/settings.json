@@ -1,0 +1,4 @@
+{
+    "appService.defaultWebAppToDeploy": "undefined/subscriptions/710954a2-3c3c-46b5-b5c4-384cf7b56198/resourceGroups/appsvc_linux_centralus/providers/Microsoft.Web/sites/TallamrajuFamilyTree",
+    "appService.deploySubpath": "."
+}

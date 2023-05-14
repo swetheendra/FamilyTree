@@ -1,0 +1,29 @@
+.header {
+  text-align: center;
+  font-size: 20px;
+  font-weight: bold;
+
+  background: #03a973;
+  width: 100%;
+  color: white;
+
+  display: flex;
+  align-items: center;
+}
+
+.home {
+  padding: 10px 20px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  background-color: green;
+}
+
+a:hover, a:active {
+  background-color: #03a973;
+  color: white;
+}
+
+.heading {
+  margin: auto;
+}
