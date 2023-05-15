@@ -62,12 +62,13 @@ const Members = {
     },
     9: {
         firstName : 'Jogiraju',
-        image: 'A.png',
-        parent: '3'
+        image: 'jogiraju.png',
+        parent: '3',
+        spouse: '10'
     },
     10: {
         firstName : 'Shakuntala',
-        image: 'A.png',
+        image: 'shakuntala.png',
         parent: '-1'
     },
     11: {
