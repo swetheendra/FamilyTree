@@ -1,0 +1,36 @@
+.entry-body {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    -webkit-transform: translate(-50%, -50%);
+    transform: translate(-50%, -50%);
+
+    border: 2px solid black;
+    padding: 10%;
+}
+
+.entry-elements {
+    display: flex;
+    flex-direction: column;
+}
+
+.entry-body-text {
+    font-weight: bold;
+    font-size: 35px;
+}
+
+.entry-header {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.entry-tree-image {
+    position: absolute;
+    right: 0;
+    bottom: 0;
+}
+
+a:hover, a:active {
+    background-color: green;
+}

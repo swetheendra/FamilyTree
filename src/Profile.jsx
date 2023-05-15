@@ -6,7 +6,6 @@ import Members, {Children} from './data/family';
 
 function Profile(props) {
     const ob = useParams();
-    console.log('props....', props, ' ',ob);
     const id = props.id ?? ob?.id;
     const family = Members[id];
     const children = Children[id];
