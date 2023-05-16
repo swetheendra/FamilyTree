@@ -3,7 +3,6 @@ import { Route, Routes } from 'react-router-dom';
 import Entry from './Entry';
 
 function App() {
-  console.log('app.....');
   return (
     <div className="App">
       <Routes>

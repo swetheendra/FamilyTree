@@ -82,12 +82,6 @@
     margin: auto;
 }
 
-@media (max-width : 320px) {
-    .child-link-only {
-        padding: 2% 15% 2% 5%;
-    }
-}
-
 a:link, a:visited {
     background-color: #90EE90;
     color: black;
@@ -101,3 +95,10 @@ a:link, a:visited {
     background-color: green;
     color: white;
   }
+
+  
+@media (max-width : 320px) {
+    .child-link-only {
+        padding: 2% 15% 2% 5%; !important;
+    }
+}
