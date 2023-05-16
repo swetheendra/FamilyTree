@@ -43,10 +43,43 @@
     margin: 5% 0%;
     display: flex;
     flex-wrap: wrap;
-    justify-content: center;
+    justify-content: space-evenly;
     align-items: center;
     align-content: flex-start;
     gap: 10px;
+}
+
+.female-links {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.male-links {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.female-links-only {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.male-links-only {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.only-link-parent {
+    margin: 5%;
+}
+
+.child-link-only {
+    width: 5%;
+    margin: auto;
 }
 
 a:link, a:visited {

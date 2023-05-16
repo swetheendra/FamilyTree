@@ -7,8 +7,8 @@ function App() {
   return (
     <div className="App">
       <Routes>
-        <Route path='/' element={<Entry />} />
-        <Route path='/profile/:id' element={<Profile/>} />
+        <Route path='/' Component={Entry} render={(props) => <Entry {...props} />}  />
+        <Route path='/profile/:id' Component={Profile} render={(props) => <Profile {...props}/>} />
       </Routes>
     </div>
   );

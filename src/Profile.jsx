@@ -2,28 +2,50 @@ import Header from './Header';
 import './Profile.css';
 import {Link} from 'react-router-dom';
 import { useParams } from 'react-router-dom';
-import Members, {Children} from './data/family';
+import {Gender} from './util/Constants';
+import { useLocation } from 'react-router-dom';
 
 function Profile(props) {
-    const ob = useParams();
-    const id = props.id ?? ob?.id;
-    const family = Members[id];
-    const children = Children[id];
-    const image= family?.image;
-    const parent = family?.parent;
-    const parentPerson =  parent != null ? Members[parent] : null;
-    const spouse = family?.spouse;
-    const spousePerson = spouse != null ? Members[spouse] : null;
+    const { state } = useLocation();
+    const { persons, mappings} = state || {};
+    const param = useParams();;
+    const id = props.id ?? param?.id;
+    
+    const person = persons[id];
+    const children = mappings[id];
+
+    const image= person?.image;
+    const parent = person?.parent;
+    const parentPerson =  parent != null ? persons[parent] : null;
+
+    const spouse = person?.spouse;
+    const spousePerson = spouse != null ? persons[spouse] : null;
     const spouseImage = spousePerson?.image;
+
+    const femaleChildren = children?.filter(childId => {
+        const child = persons[childId];
+        const gender = child.gender;
+        return gender == Gender.Female;
+    });
+
+    const maleChildren = children?.filter(childId => {
+        const child = persons[childId];
+        const gender = child.gender;
+        return gender == Gender.Male;
+    });
+
+    const doesMaleChildExist = (!!maleChildren && maleChildren.length > 0);
+    const doesFemaleChildExist = (!!femaleChildren && femaleChildren.length > 0);
+    const doesBothTypesOfChildrenExist = doesFemaleChildExist && doesMaleChildExist;
 
     return (
         <div className='screen'>
             <div className='page'>
                 <Header />
-                { !!family && <div className='profile'>
+                { !!person && <div className='profile'>
                         {!!parentPerson && 
                             <div className='parentLink'>
-                                <Link key = {parent} to={`/profile/${parent}`} >
+                                <Link key = {parent} to={`/profile/${parent}`} state={{persons: persons, mappings: mappings}}>
                                     <img src={require('./images/uparrow.png')} alt="arrow" width="20" height="20"/>
                                 </Link>
                             </div>
@@ -31,10 +53,10 @@ function Profile(props) {
                         <div className='persons'>
                             <div className='person-details'>
                                 <img src={require('./images/'+image)} alt="profileImage" width="200" height="200"/>
-                                <div className='name'> {family.firstName} </div>
+                                <div className='name'> {person.firstName} </div>
                             </div>
 
-                            {!!family.spouse && 
+                            {!!person.spouse && 
                                 <div className='person-details'>
                                     <img src={require('./images/'+spouseImage)} alt="spouseImage" width="200" height="200"/>
                                     <div className='name'> 
@@ -48,16 +70,60 @@ function Profile(props) {
                 }
             </div>
 
-            <div className='links'>
-                {children?.map((childId, index) => {
-                    const child = Members[childId];
-                    const childName = child.firstName;
-                    return (
-                        <Link className="child-link" key = {childId} to={`/profile/${childId}`} >{childName}</Link>
-                    );
-                })}
-                        
-            </div>
+            { doesBothTypesOfChildrenExist && 
+                <div className='links'>
+                    <div className='female-links'>
+                        {femaleChildren?.map((childId, index) => {
+                            const child = persons[childId];
+                            const childName = child.firstName;
+                            return (
+                                <Link className="child-link" key = {childId} to={`/profile/${childId}`}state={{persons: persons, mappings: mappings}}>{childName}</Link>
+                            );
+                        })} 
+                    </div>  
+                    <div className='male-links'>
+                        {maleChildren?.map((childId, index) => {
+                            const child = persons[childId];
+                            const childName = child.firstName;
+                            return (
+                                <Link className="child-link" key = {childId} to={`/profile/${childId}`}state={{persons: persons, mappings: mappings}}>{childName}</Link>
+                            );
+                        })} 
+                    </div>      
+                </div>
+            }
+
+            {
+                !doesBothTypesOfChildrenExist && 
+                    (
+                        doesFemaleChildExist ? (
+                            <div className='only-link-parent'>
+                                <div className='female-links-only'>
+                                    {femaleChildren?.map((childId, index) => {
+                                        const child = persons[childId];
+                                        const childName = child.firstName;
+                                        return (
+                                            <Link className="child-link-only" key = {childId} to={`/profile/${childId}`}state={{persons: persons, mappings: mappings}}>{childName}</Link>
+                                        );
+                                    })} 
+                                </div> 
+                            </div>
+                        ) : (
+                            <div className='only-link-parent'> 
+                                <div className='male-links-only'>
+                                {maleChildren?.map((childId, index) => {
+                                    const child = persons[childId];
+                                    const childName = child.firstName;
+                                    return (
+                                        <Link className="child-link-only" key = {childId} to={`/profile/${childId}`}state={{persons: persons, mappings: mappings}}>{childName}</Link>
+                                    );
+                                })} 
+                                </div> 
+                            </div>
+                        )
+                    )
+            }
+
         </div>
     );
 }
