@@ -98,7 +98,7 @@ a:link, a:visited {
 
   
 @media (max-width : 320px) {
-    .child-link-only {
+    a:link, a:visited {
         padding: 2% 15% 2% 5%;
     }
 }
