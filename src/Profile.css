@@ -80,6 +80,9 @@
 .child-link-only {
     width: 5%;
     margin: auto;
+    @media (max-width : 320px) {
+        padding: 2% 15% 2% 5%;
+    }
 }
 
 a:link, a:visited {
