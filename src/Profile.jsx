@@ -11,8 +11,8 @@ function Profile(props) {
     const param = useParams();;
     const id = props.id ?? param?.id;
     
-    const person = persons[id];
-    const children = mappings[id];
+    const person = persons?.[id];
+    const children = mappings?.[id];
 
     const image= person?.image;
     const parent = person?.parent;
