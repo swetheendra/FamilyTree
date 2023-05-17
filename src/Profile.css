@@ -78,8 +78,8 @@
 }
 
 .child-link-only {
-    width: 5%;
     margin: auto;
+    word-wrap:break-word;
 }
 
 a:link, a:visited {
