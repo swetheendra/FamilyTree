@@ -26,7 +26,7 @@ function Entry() {
             return readPersons();
         });
 
-        const prom3 = fetch("https://tallamrajutree.azurewebsites.net/.auth/me",{
+        const prom3 = fetch("https://tallamrajutreestructure.azurewebsites.net/.auth/me",{
             mode: 'cors',
             headers: {
               'Content-Type': 'application/json'
