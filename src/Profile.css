@@ -82,6 +82,7 @@
     word-wrap:break-word;
 }
 
+
 a:link, a:visited {
     background-color: #90EE90;
     color: black;
@@ -97,8 +98,13 @@ a:link, a:visited {
   }
 
   
-@media (max-width : 320px) {
-    a:link, a:visited {
-        padding: 2% 15% 2% 5%;
-    }
+.section {
+    display: flex;
+}
+
+.update-button {
+    height: 30px;
+    margin: 20px;
+    background: #90EE90;
+    border-radius: 10%;
 }

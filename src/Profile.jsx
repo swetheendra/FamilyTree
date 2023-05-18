@@ -4,68 +4,74 @@ import {Link} from 'react-router-dom';
 import { useParams } from 'react-router-dom';
 import {Gender} from './util/Constants';
 import { useLocation } from 'react-router-dom';
+import { useState } from 'react';
+import DrawerComponent from './Drawer';
+import DisplayImagesFromContainer from './ContainerImages';
 
 function Profile(props) {
     const { state } = useLocation();
-    const { persons, mappings} = state || {};
+    const { persons, mappings, blobList, isAdmin} = state || {};
     const param = useParams();;
     const id = props.id ?? param?.id;
     
     const person = persons?.[id];
     const children = mappings?.[id];
-
-    const image= person?.image;
     const parent = person?.parent;
     const parentPerson =  parent != null ? persons[parent] : null;
 
     const spouse = person?.spouse;
     const spousePerson = spouse != null ? persons[spouse] : null;
-    const spouseImage = spousePerson?.image;
 
     const femaleChildren = children?.filter(childId => {
         const child = persons[childId];
         const gender = child.gender;
-        return gender == Gender.Female;
+        return gender === Gender.Female;
     });
 
     const maleChildren = children?.filter(childId => {
         const child = persons[childId];
         const gender = child.gender;
-        return gender == Gender.Male;
+        return gender === Gender.Male;
     });
 
     const doesMaleChildExist = (!!maleChildren && maleChildren.length > 0);
     const doesFemaleChildExist = (!!femaleChildren && femaleChildren.length > 0);
     const doesBothTypesOfChildrenExist = doesFemaleChildExist && doesMaleChildExist;
 
+    const [openDrawer, setOpenDrawer] = useState(false);
+
     return (
         <div className='screen'>
             <div className='page'>
                 <Header />
+                <DrawerComponent openDrawer={openDrawer} setOpenDrawer={setOpenDrawer} person={person} spouse={spousePerson}/>
                 { !!person && <div className='profile'>
                         {!!parentPerson && 
                             <div className='parentLink'>
-                                <Link key = {parent} to={`/profile/${parent}`} state={{persons: persons, mappings: mappings}}>
+                                <Link key = {parent} to={`/profile/${parent}`} state={{persons: persons, mappings: mappings, blobList: blobList, isAdmin: isAdmin}}>
                                     <img src={require('./images/uparrow.png')} alt="arrow" width="20" height="20"/>
                                 </Link>
                             </div>
                         }
-                        <div className='persons'>
-                            <div className='person-details'>
-                                <img src={require('./images/'+image)} alt="profileImage" width="200" height="200"/>
-                                <div className='name'> {person.firstName} </div>
-                            </div>
-
-                            {!!person.spouse && 
+                        <span className='section'>
+                            <div className='persons'>
                                 <div className='person-details'>
-                                    <img src={require('./images/'+spouseImage)} alt="spouseImage" width="200" height="200"/>
-                                    <div className='name'> 
-                                        {spousePerson.firstName}
-                                        {!!spousePerson.lastName ? ` ${spousePerson.lastName}` : ""} 
-                                    </div>
+                                    <DisplayImagesFromContainer blobList={blobList} id={id}/>
+                                    <div className='name'> {person.firstName} </div>
                                 </div>
-                            }
-                        </div>
+
+                                {!!person.spouse && 
+                                    <div className='person-details'>
+                                        <DisplayImagesFromContainer blobList={blobList} id={spouse}/>
+                                        <div className='name'> 
+                                            {spousePerson.firstName}
+                                            {!!spousePerson.lastName ? ` ${spousePerson.lastName}` : ""} 
+                                        </div>
+                                    </div>
+                                }
+                            </div>
+                            { isAdmin && <button className='update-button' onClick={() => setOpenDrawer(true)}>Edit Profile</button>}
+                        </span>
                     </div>
                 }
             </div>
@@ -77,7 +83,7 @@ function Profile(props) {
                             const child = persons[childId];
                             const childName = child.firstName;
                             return (
-                                <Link className="child-link" key = {childId} to={`/profile/${childId}`}state={{persons: persons, mappings: mappings}}>{childName}</Link>
+                                <Link className="child-link" key = {childId} to={`/profile/${childId}`} state={{persons: persons, mappings: mappings, blobList: blobList, isAdmin: isAdmin}}>{childName}</Link>
                             );
                         })} 
                     </div>  
@@ -86,7 +92,7 @@ function Profile(props) {
                             const child = persons[childId];
                             const childName = child.firstName;
                             return (
-                                <Link className="child-link" key = {childId} to={`/profile/${childId}`}state={{persons: persons, mappings: mappings}}>{childName}</Link>
+                                <Link className="child-link" key = {childId} to={`/profile/${childId}`}state={{persons: persons, mappings: mappings, blobList: blobList, isAdmin: isAdmin}}>{childName}</Link>
                             );
                         })} 
                     </div>      
@@ -103,7 +109,7 @@ function Profile(props) {
                                         const child = persons[childId];
                                         const childName = child.firstName;
                                         return (
-                                            <Link className="child-link-only" key = {childId} to={`/profile/${childId}`}state={{persons: persons, mappings: mappings}}>{childName}</Link>
+                                            <Link className="child-link-only" key = {childId} to={`/profile/${childId}`}state={{persons: persons, mappings: mappings, blobList: blobList, isAdmin: isAdmin}}>{childName}</Link>
                                         );
                                     })} 
                                 </div> 
@@ -115,7 +121,7 @@ function Profile(props) {
                                     const child = persons[childId];
                                     const childName = child.firstName;
                                     return (
-                                        <Link className="child-link-only" key = {childId} to={`/profile/${childId}`}state={{persons: persons, mappings: mappings}}>{childName}</Link>
+                                        <Link className="child-link-only" key = {childId} to={`/profile/${childId}`}state={{persons: persons, mappings: mappings, blobList: blobList, isAdmin: isAdmin}}>{childName}</Link>
                                     );
                                 })} 
                                 </div> 
