@@ -36,8 +36,6 @@ export const getBlobsInContainer = async () => {
   // get list of blobs in container
   // eslint-disable-next-line
   for await (const blob of containerClient.listBlobsFlat()) {
-    console.log(`${blob.name}`);
-
     const blobItem = {
       url: `https://${storageAccountName}.blob.core.windows.net/${containerName}/${blob.name}?${sasToken}`,
       name: blob.name

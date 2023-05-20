@@ -22,6 +22,28 @@ function App() {
     const relations = getParentChildMappings(persons);
     setMappings(relations);
   }, [persons])
+  
+  useEffect(() => {
+    const loadImage = image => {
+      return new Promise((resolve, reject) => {
+        const loadImg = new Image()
+        loadImg.src = image.url
+        loadImg.onload = () => {
+          resolve({url: image.url, name: image.name});
+        }
+        loadImg.onerror = err => reject(err)
+      })
+    }
+
+    blobList.forEach((blob) => {
+      blob.url = blob.url+`&date=${new Date()}`
+    })
+
+    Promise.all(blobList.map(image => loadImage(image)))
+      .then((args) => {
+        console.log('loaded images....')
+      });
+  }, [blobList])
 
   const setImageOfPerson = (name, url) => {
     const filteredList = blobList.filter((blob) => blob.name !== name);
@@ -46,8 +68,7 @@ function App() {
           'Content-Type': 'application/json'
         },
       })
-      .then(resp => resp.json());
-      
+      .then(resp => resp.json());      
 
     Promise.all([prom1, prom2, prom3]).then(values => {
         const blobList = values[0];
