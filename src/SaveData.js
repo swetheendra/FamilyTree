@@ -33,7 +33,7 @@ async function saveData(person, spouse, firstName, lastName, spouseFN,  spouseLN
 
     person.firstName = firstName;
     person.lastName = lastName;
-    person = await updatePerson(person);
+    await updatePerson(person);
 
     const personupl = await uploadFileToBlob(personImage, person.personId);
     if (!!personupl) {
