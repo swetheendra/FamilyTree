@@ -5,6 +5,7 @@ import { useParams } from 'react-router-dom';
 import {Gender} from './util/Constants';
 import { useState } from 'react';
 import DrawerComponent from './Drawer';
+import ChildDrawer from './ChildDrawer';
 import DisplayImagesFromContainer from './ContainerImages';
 
 function Profile(props) {
@@ -37,13 +38,15 @@ function Profile(props) {
     const doesBothTypesOfChildrenExist = doesFemaleChildExist && doesMaleChildExist;
 
     const [openDrawer, setOpenDrawer] = useState(false);
+    const [openChildDrawer, setOpenChildDrawer] = useState(false);
 
     return (
         <div className='screen'>
             <div className='page'>
                 <Header />
                 {!!person && openDrawer && <DrawerComponent openDrawer={openDrawer} setOpenDrawer={setOpenDrawer} person={person} spouse={spousePerson} addPerson={addPerson} setImageOfPerson={setImageOfPerson}/> }
-                { !!person && <div className='profile'>
+                {!!person && openChildDrawer && <ChildDrawer openChildDrawer={openChildDrawer} setOpenChildDrawer={setOpenChildDrawer} parentId={id} addPerson={addPerson} setImageOfPerson={setImageOfPerson}/>}
+                {!!person && <div className='profile'>
                         {!!parentPerson && 
                             <div className='parentLink'>
                                 <Link key = {parent} to={`/profile/${parent}`}>
@@ -68,7 +71,10 @@ function Profile(props) {
                                     </div>
                                 }
                             </div>
-                            { isAdmin && <button className='update-button' onClick={() => setOpenDrawer(true)}>Edit Profile</button>}
+                            <span className='admin-buttons'>
+                                { isAdmin && <button className='update-button' onClick={() => setOpenDrawer(true)}>Edit Profile</button>}
+                                { isAdmin && <button className='add-child' onClick={() => setOpenChildDrawer(true)}>Add Child</button>}
+                            </span>
                         </span>
                     </div>
                 }

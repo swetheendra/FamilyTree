@@ -108,3 +108,16 @@ a:link, a:visited {
     background: #90EE90;
     border-radius: 10%;
 }
+
+.add-child {
+    height: 30px;
+    margin: 20px;
+    background: #90EE90;
+    border-radius: 10%;
+}
+
+.admin-buttons {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
