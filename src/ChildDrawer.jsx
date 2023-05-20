@@ -1,6 +1,5 @@
 import { Box, Drawer, Typography } from "@mui/material";
 import useMediaQuery from '@mui/material/useMediaQuery';
-import saveData from './SaveData';
 import addData from './AddData';
 import MoonLoader from "react-spinners/MoonLoader";
 
