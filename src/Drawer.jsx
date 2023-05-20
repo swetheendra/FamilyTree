@@ -1,9 +1,10 @@
 import { Box, Drawer, Typography } from "@mui/material";
 import useMediaQuery from '@mui/material/useMediaQuery';
 import saveData from './SaveData';
+import MoonLoader from "react-spinners/MoonLoader";
 
 import './Drawer.css';
-import { useState } from "react";
+import { useState  } from "react";
 
 const DrawerComponent = ({openDrawer, setOpenDrawer, person, spouse, addPerson, setImageOfPerson}) => {
     const matches = useMediaQuery('(max-width:400px)');
@@ -13,12 +14,13 @@ const DrawerComponent = ({openDrawer, setOpenDrawer, person, spouse, addPerson, 
     const [personLastName, setPersonLastName] = useState(person?.lastName); 
     const [spouseFirstName, setSpouseFirstName] = useState(spouse?.firstName); 
     const [spouseLastName, setSpouseLastName] = useState(spouse?.lastName); 
+    const [loading, setLoading] = useState(false);
 
     const [fileSelected, setFileSelected] = useState();
     const [spouseFileSelected, setSpouseFileSelected] = useState();
     
     const onSubmit = async () => {
-        await saveData(person,spouse,personFirstName, personLastName, spouseFirstName, spouseLastName, fileSelected, spouseFileSelected, addPerson, setImageOfPerson);
+        await saveData(person,spouse,personFirstName, personLastName, spouseFirstName, spouseLastName, fileSelected, spouseFileSelected, addPerson, setImageOfPerson, setLoading);
         setOpenDrawer(false);
     }
 
@@ -30,7 +32,16 @@ const DrawerComponent = ({openDrawer, setOpenDrawer, person, spouse, addPerson, 
         setSpouseFileSelected(event.target.files[0]);
     };
 
+    const override = {
+        position: "absolute",
+        top: "40%",
+        left: "80%",
+        borderColor: "blue",
+        zIndex: '100000000'
+      };
+
     return (
+        <>
         <Drawer anchor="right" open={openDrawer} onClose={() => {setOpenDrawer(false)}}>
             <Box p={2} width={width} textAlign='center' role='presentation'>
                 <form onSubmit={(e) => {
@@ -106,6 +117,15 @@ const DrawerComponent = ({openDrawer, setOpenDrawer, person, spouse, addPerson, 
                 </form>
             </Box>
         </Drawer>
+        <MoonLoader
+            color="#000000"
+            loading={loading}
+            size={150}
+            aria-label="Loading Spinner"
+            data-testid="loader"
+            cssOverride={override}
+        />
+        </>
     );
 };
 

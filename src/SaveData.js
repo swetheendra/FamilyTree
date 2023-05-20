@@ -4,8 +4,9 @@ import {updatePerson, createPerson} from './util/DBHelper';
 import {getOppositeGender} from './util/personHelper';
 import { v4 as uuidv4 } from 'uuid';
 
-async function saveData(person, spouse, firstName, lastName, spouseFN,  spouseLN, personImage, spouseImage, addPerson, setImageOfPerson)
+async function saveData(person, spouse, firstName, lastName, spouseFN,  spouseLN, personImage, spouseImage, addPerson, setImageOfPerson, setLoading)
 {
+    setLoading(true);
     const isSpouseDefined = !!spouseFN; 
     const shouldCreateSpouse = (spouse == null);
     if(shouldCreateSpouse && isSpouseDefined) {
@@ -46,6 +47,7 @@ async function saveData(person, spouse, firstName, lastName, spouseFN,  spouseLN
             setImageOfPerson(`${spouse.personId}.png`, upl._response.request.url);
         }
     }
+    setLoading(false);
 }
 
 export default saveData;
