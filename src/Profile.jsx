@@ -3,14 +3,12 @@ import './Profile.css';
 import {Link} from 'react-router-dom';
 import { useParams } from 'react-router-dom';
 import {Gender} from './util/Constants';
-import { useLocation } from 'react-router-dom';
 import { useState } from 'react';
 import DrawerComponent from './Drawer';
 import DisplayImagesFromContainer from './ContainerImages';
 
 function Profile(props) {
-    const { state } = useLocation();
-    const { persons, mappings, blobList, isAdmin} = state || {};
+    const { persons, mappings, blobList, isAdmin, addPerson, setImageOfPerson} = props || {};
     const param = useParams();;
     const id = props.id ?? param?.id;
     
@@ -44,11 +42,11 @@ function Profile(props) {
         <div className='screen'>
             <div className='page'>
                 <Header />
-                <DrawerComponent openDrawer={openDrawer} setOpenDrawer={setOpenDrawer} person={person} spouse={spousePerson}/>
+                {!!person && openDrawer && <DrawerComponent openDrawer={openDrawer} setOpenDrawer={setOpenDrawer} person={person} spouse={spousePerson} addPerson={addPerson} setImageOfPerson={setImageOfPerson}/> }
                 { !!person && <div className='profile'>
                         {!!parentPerson && 
                             <div className='parentLink'>
-                                <Link key = {parent} to={`/profile/${parent}`} state={{persons: persons, mappings: mappings, blobList: blobList, isAdmin: isAdmin}}>
+                                <Link key = {parent} to={`/profile/${parent}`}>
                                     <img src={require('./images/uparrow.png')} alt="arrow" width="20" height="20"/>
                                 </Link>
                             </div>
@@ -60,12 +58,12 @@ function Profile(props) {
                                     <div className='name'> {person.firstName} </div>
                                 </div>
 
-                                {!!person.spouse && 
+                                {!!person.spouse && !!spousePerson &&
                                     <div className='person-details'>
                                         <DisplayImagesFromContainer blobList={blobList} id={spouse}/>
                                         <div className='name'> 
                                             {spousePerson.firstName}
-                                            {!!spousePerson.lastName ? ` ${spousePerson.lastName}` : ""} 
+                                            {(!!spousePerson.lastName && !!spousePerson.Gender === Gender.Male) ? ` ${spousePerson.lastName}` : ""} 
                                         </div>
                                     </div>
                                 }
@@ -83,7 +81,7 @@ function Profile(props) {
                             const child = persons[childId];
                             const childName = child.firstName;
                             return (
-                                <Link className="child-link" key = {childId} to={`/profile/${childId}`} state={{persons: persons, mappings: mappings, blobList: blobList, isAdmin: isAdmin}}>{childName}</Link>
+                                <Link className="child-link" key = {childId} to={`/profile/${childId}`}>{childName}</Link>
                             );
                         })} 
                     </div>  
@@ -92,7 +90,7 @@ function Profile(props) {
                             const child = persons[childId];
                             const childName = child.firstName;
                             return (
-                                <Link className="child-link" key = {childId} to={`/profile/${childId}`}state={{persons: persons, mappings: mappings, blobList: blobList, isAdmin: isAdmin}}>{childName}</Link>
+                                <Link className="child-link" key = {childId} to={`/profile/${childId}`}>{childName}</Link>
                             );
                         })} 
                     </div>      
@@ -109,7 +107,7 @@ function Profile(props) {
                                         const child = persons[childId];
                                         const childName = child.firstName;
                                         return (
-                                            <Link className="child-link-only" key = {childId} to={`/profile/${childId}`}state={{persons: persons, mappings: mappings, blobList: blobList, isAdmin: isAdmin}}>{childName}</Link>
+                                            <Link className="child-link-only" key = {childId} to={`/profile/${childId}`}>{childName}</Link>
                                         );
                                     })} 
                                 </div> 
@@ -121,7 +119,7 @@ function Profile(props) {
                                     const child = persons[childId];
                                     const childName = child.firstName;
                                     return (
-                                        <Link className="child-link-only" key = {childId} to={`/profile/${childId}`}state={{persons: persons, mappings: mappings, blobList: blobList, isAdmin: isAdmin}}>{childName}</Link>
+                                        <Link className="child-link-only" key = {childId} to={`/profile/${childId}`}>{childName}</Link>
                                     );
                                 })} 
                                 </div> 

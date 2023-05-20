@@ -1,4 +1,4 @@
-
+import {Gender} from './Constants';
 
 export const getParentChildMappings = (persons) => {
     const mapping = {};
@@ -15,3 +15,13 @@ export const getParentChildMappings = (persons) => {
     }
     return mapping;
 }
+
+const getOppositeGender = (person) => {
+    if(person.gender === Gender.Male) {
+        return Gender.Female;
+    } else {
+        return Gender.Male;
+    }
+}
+
+export {getOppositeGender}

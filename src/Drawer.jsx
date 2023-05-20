@@ -1,31 +1,41 @@
 import { Box, Drawer, Typography } from "@mui/material";
 import useMediaQuery from '@mui/material/useMediaQuery';
-import { useForm } from "react-hook-form";
+import saveData from './SaveData';
 
 import './Drawer.css';
+import { useState } from "react";
 
-const DrawerComponent = ({openDrawer, setOpenDrawer, person, spouse}) => {
+const DrawerComponent = ({openDrawer, setOpenDrawer, person, spouse, addPerson, setImageOfPerson}) => {
     const matches = useMediaQuery('(max-width:400px)');
     const width = matches ? "150px" : "350px";
-    
-    const { register, handleSubmit, setValue } = useForm({
-        defaultValues: {
-          personFirstName: person?.firstName,
-          personLastName: person?.lastName,
-          spouseFirstName: spouse?.firstName,
-          spouseLastName: spouse?.lastName,
-          person
-        }
-      });
 
-    const onSubmit = data => {
-        console.log('data....', data);
+    const [personFirstName, setPersonFirstName] = useState(person?.firstName); 
+    const [personLastName, setPersonLastName] = useState(person?.lastName); 
+    const [spouseFirstName, setSpouseFirstName] = useState(spouse?.firstName); 
+    const [spouseLastName, setSpouseLastName] = useState(spouse?.lastName); 
+
+    const [fileSelected, setFileSelected] = useState();
+    const [spouseFileSelected, setSpouseFileSelected] = useState();
+    
+    const onSubmit = async () => {
+        await saveData(person,spouse,personFirstName, personLastName, spouseFirstName, spouseLastName, fileSelected, spouseFileSelected, addPerson, setImageOfPerson);
+        setOpenDrawer(false);
     }
+
+    const onFileChange = (event) => {
+        setFileSelected(event.target.files[0]);
+    };
+
+    const onSpouseFileChange = (event) => {
+        setSpouseFileSelected(event.target.files[0]);
+    };
 
     return (
         <Drawer anchor="right" open={openDrawer} onClose={() => {setOpenDrawer(false)}}>
             <Box p={2} width={width} textAlign='center' role='presentation'>
-                <form onSubmit={handleSubmit(onSubmit)}>
+                <form onSubmit={(e) => {
+                    e.preventDefault();
+                    }}>
                     <Typography component='div' variant="h6">
                         <h4 className="bold">
                             Edit Personal Profile
@@ -40,18 +50,18 @@ const DrawerComponent = ({openDrawer, setOpenDrawer, person, spouse}) => {
                         <div className="heading left">
                             <div className="elements">
                                 <div>
-                                    <label for="person-first">FirstName: </label>
-                                    <input id="person-first"{...register("personFirstName")}/>
+                                    <label htmlFor="person-first">FirstName: </label>
+                                    <input id="person-first" value={personFirstName} onChange={(e) => setPersonFirstName(e.target.value)}/>
                                 </div>
 
                                 <div>
-                                    <label for="person-last">LastName: </label>
-                                    <input id="person-last"{...register("personLastName")}/>
+                                    <label htmlFor="person-last">LastName: </label>
+                                    <input id="person-last" value={personLastName} onChange={(e) => setPersonLastName(e.target.value)}/>
                                 </div>
 
                                 <div>
                                     <label>Enter Person Image File
-                                        <input type="file" name="myImage" accept="image/png, image/gif, image/jpeg" />
+                                        <input type="file" name="myImage" accept="image/png, image/gif, image/jpeg" onChange={onFileChange} />
                                     </label>
                                 </div>
                             </div>
@@ -66,18 +76,18 @@ const DrawerComponent = ({openDrawer, setOpenDrawer, person, spouse}) => {
                         <div className="heading left">
                             <div className="elements">
                                 <div>
-                                    <label for="spouse-person-first">FirstName: </label>
-                                    <input id="spouse-person-first"{...register("spouseFirstName")}/>
+                                    <label htmlFor="spouse-person-first">FirstName: </label>
+                                    <input id="spouse-person-first" value={spouseFirstName} onChange={(e) => setSpouseFirstName(e.target.value)}/>
                                 </div>
 
                                 <div>
-                                    <label for="spouse-person-last">LastName: </label>
-                                    <input id="spouse-person-last"{...register("spouseLastName")}/>
+                                    <label htmlFor="spouse-person-last">LastName: </label>
+                                    <input id="spouse-person-last" value={spouseLastName} onChange={(e) => setSpouseLastName(e.target.value)}/>
                                 </div>
 
                                 <div>
                                     <label>Enter Spouse Image File
-                                        <input type="file" accept=".png, .jpg, .jpeg" />
+                                        <input type="file" name="spouseImage" accept="image/png, image/gif, image/jpeg" onChange={onSpouseFileChange} />
                                     </label>
                                 </div>
                             </div>
@@ -86,7 +96,9 @@ const DrawerComponent = ({openDrawer, setOpenDrawer, person, spouse}) => {
                     <Typography component='div'>
                         <div className="footer">
                             <div className="footer-buttons">
-                                <input type="submit" onClick={() => {}} className="button" />
+                                <input type="submit" onClick={() => {
+                                    onSubmit();
+                                }} className="button" />
                                 <button onClick={() => setOpenDrawer(false)} className="button">Cancel</button>
                             </div>
                         </div>

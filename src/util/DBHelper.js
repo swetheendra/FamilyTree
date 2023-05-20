@@ -48,4 +48,32 @@ async function readPersons() {
     return persons;
   }
 
-  export { createDatabase, readPersons, readDatabase }
+  const updatePerson = async (person) => {
+    const {item} = await client
+    .database(databaseId)
+    .container(containerId)
+    .item(person.id)
+    .replace(person);
+    return item;
+  }
+
+  
+  async function createPerson(itemBody) {
+    const ob = await client
+      .database(databaseId)
+      .container(containerId)
+      .items.upsert(itemBody);
+    const {item} = ob;
+    return item;
+  }
+
+  async function deletePerson(itemBody) {
+    await client
+      .database(databaseId)
+      .container(containerId)
+      .item(itemBody.id)
+      .delete(itemBody)
+    console.log(`Deleted item:\n${itemBody.id}\n`)
+  }
+
+  export { createDatabase, readPersons, readDatabase, updatePerson, createPerson, deletePerson }

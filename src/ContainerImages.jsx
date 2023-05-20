@@ -5,7 +5,7 @@ const DisplayImagesFromContainer = ({blobList, id}) => {
         matchingProfile = blobList.find(item => item.name === "0.png");
     }
     return (
-        <img src={matchingProfile.url} alt={matchingProfile.name} height="200" />
+        <img src={`${matchingProfile.url}&time=${new Date()}`} alt={matchingProfile.name} height="200" />
     )};
 
   export default DisplayImagesFromContainer;

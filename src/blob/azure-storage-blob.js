@@ -52,24 +52,24 @@ export const getBlobsInContainer = async () => {
 // </snippet_getBlobsInContainer>
 
 // <snippet_createBlobInContainer>
-const createBlobInContainer = async (file) => {
+const createBlobInContainer = async (file, name) => {
   // create blobClient for container
-  const blobClient = containerClient.getBlockBlobClient(file.name);
+  const blobClient = containerClient.getBlockBlobClient(`${name}.png`);
 
   // set mimetype as determined from browser with file upload control
   const options = { blobHTTPHeaders: { blobContentType: file.type } };
 
   // upload file
-  await blobClient.uploadData(file, options);
+  return await blobClient.uploadData(file, options);
 };
 // </snippet_createBlobInContainer>
 
 // <snippet_uploadFileToBlob>
-const uploadFileToBlob = async (file) => {
+const uploadFileToBlob = async (file, name) => {
   if (!file) return;
 
   // upload file
-  await createBlobInContainer(file);
+  return await createBlobInContainer(file, name);
 };
 // </snippet_uploadFileToBlob>
 
