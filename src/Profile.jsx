@@ -66,7 +66,9 @@ function Profile(props) {
                                         <DisplayImagesFromContainer blobList={blobList} id={spouse}/>
                                         <div className='name'> 
                                             {spousePerson.firstName}
-                                            {(!!spousePerson.lastName && !!spousePerson.Gender === Gender.Male) ? ` ${spousePerson.lastName}` : ""} 
+                                        </div>
+                                        <div className='name'>
+                                            {(!!spousePerson.lastName && !!spousePerson.gender && (spousePerson.gender === Gender.Male)) ? ` ${spousePerson.lastName}` : ""} 
                                         </div>
                                     </div>
                                 }
